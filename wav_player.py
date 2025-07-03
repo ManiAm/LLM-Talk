@@ -36,16 +36,19 @@ async def play_bytes(wav_bytes: bytes):
     await asyncio.to_thread(blocking_play)
 
 
-async def play_file(filepath: str, normalize=True):
+async def play_file(filepath: str):
 
     def blocking_play():
 
         audio, samplerate = sf.read(filepath, dtype='float32')
 
-        if normalize:
-            max_val = np.max(np.abs(audio))
-            if max_val > 0:
-                audio = audio / max_val
+        max_val = np.max(np.abs(audio))
+        if max_val > 0:
+            audio = audio * 0.8  # cap at 80% volume to avoid clipping
+
+        # Upmix mono to stereo
+        if audio.ndim == 1:
+            audio = np.stack([audio, audio], axis=1)
 
         sd.play(audio, samplerate=samplerate)
         sd.wait()
