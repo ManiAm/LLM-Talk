@@ -27,7 +27,7 @@ To support dynamic and responsive interactions, LLM-Talk allows users to interru
 
 LLM-Talk is designed to be highly configurable, allowing users to tailor the system to their specific needs and preferences. The [configuration](./config.py) covers various components of the pipeline, including:
 
-- **Hotword Detection**: Parameters such as the hotword phrase, model type, silence duration, etc. can be adjusted to optimize for different environments.
+- **Hotword Detection**: Parameters such as the hotword phrase, model type, silence duration, audio played after hotword or silent detection, etc. can be adjusted to optimize for different environments.
 
 - **LLM Backend**: The underlying large language model can be easily switched using LiteLLM. This enables unified experimentation across different LLM ecosystems.
 
@@ -39,5 +39,7 @@ LLM-Talk is designed to be highly configurable, allowing users to tailor the sys
 
 
 -----------------
+
+TODO:
 
 integrate with freepbx voice system

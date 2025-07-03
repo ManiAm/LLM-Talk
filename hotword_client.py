@@ -13,15 +13,19 @@ from wav_player import play_file
 script_path = os.path.abspath(__file__)
 script_dir = os.path.dirname(script_path)
 
-hotword_audio = os.path.join(script_dir, config.hotword_audio)
-if not os.path.exists(hotword_audio):
-    print("hotword_audio is not accessible")
-    sys.exit(1)
+hotword_audio = None
+if config.hotword_audio:
+    hotword_audio = os.path.join(script_dir, config.hotword_audio)
+    if not os.path.exists(hotword_audio):
+        print("hotword_audio is not accessible")
+        sys.exit(1)
 
-silence_audio = os.path.join(script_dir, config.silence_audio)
-if not os.path.exists(silence_audio):
-    print("silence_audio is not accessible")
-    sys.exit(1)
+silence_audio = None
+if config.silence_audio:
+    silence_audio = os.path.join(script_dir, config.silence_audio)
+    if not os.path.exists(silence_audio):
+        print("silence_audio is not accessible")
+        sys.exit(1)
 
 
 async def run_hotword_listener(transcription_queue: asyncio.Queue):
@@ -56,10 +60,10 @@ async def run_hotword_listener(transcription_queue: asyncio.Queue):
 
                     print(f"[hotword_listener]: {data}")
 
-                    if data_type == MessageType.HOTWORD.value:
+                    if hotword_audio and data_type == MessageType.HOTWORD.value:
                         await play_file(hotword_audio)
 
-                    if data_type == MessageType.SILENCE.value:
+                    if silence_audio and data_type == MessageType.SILENCE.value:
                         await play_file(silence_audio)
 
                     await transcription_queue.put(data)
