@@ -27,8 +27,10 @@ async def play_bytes(wav_bytes: bytes):
                 if num_channels > 1:
                     audio = audio.reshape(-1, num_channels)
 
-                audio = audio.astype(np.float32) / np.iinfo(dtype).max
-                audio *= 0.8
+                audio = audio.astype(np.float32)
+                max_val = np.max(np.abs(audio))
+                if max_val > 0:
+                    audio = audio / max_val * 0.8
 
                 sd.play(audio, samplerate=samplerate)
                 sd.wait()
@@ -44,7 +46,7 @@ async def play_file(filepath: str):
 
         max_val = np.max(np.abs(audio))
         if max_val > 0:
-            audio = audio * 0.8  # cap at 80% volume to avoid clipping
+            audio = audio / max_val * 0.8  # normalization to 80% peak
 
         # Upmix mono to stereo
         if audio.ndim == 1:

@@ -53,7 +53,7 @@ async def run_hotword_listener(transcription_queue: asyncio.Queue):
                         print(f"[hotword_listener]: {data}", flush=True)
                         continue
 
-                    if data_type in (MessageType.HOST_INFO.value, MessageType.DEV_INPUT.value, MessageType.DEV_OUTPUT.value):
+                    if data_type in (MessageType.HOST_INFO.value, MessageType.DEV_INPUT.value):
                         json_obj = json.loads(msg)
                         print_dict_tabular(json_obj, data_type)
                         continue
